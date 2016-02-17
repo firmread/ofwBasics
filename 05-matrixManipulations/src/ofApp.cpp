@@ -13,28 +13,33 @@ void ofApp::setup(){
 
 void ofApp::draw(){
     ofClear(0);
+    // move to the window center
     ofTranslate(ofGetWindowSize()/2);
     
-    int numCircles = 16;
+    int numCircles = 32;
     float radius = ofGetHeight()/2 - 30;
     
-    ofNoFill();
-    ofSetLineWidth(2.5);
-    for (int i = 0; i<numCircles; ++i){
+    for (int i = 0; i< numCircles; ++i) {
         float rel = i / (float)numCircles;
-        float angle = rel * PI * 2;
-        ofPoint offset(cos(angle), sin(angle));
+        float angle = rel * TWO_PI;
+        //cos & sin takes radians
+        ofPoint offset(cos(angle),sin(angle));
         
+        // preserve the matrix
         ofPushMatrix();
+        // move to the correct position
         ofTranslate(offset*radius);
+        // rotate by current angle ofRotate takes degree!
+        ofRotate(angle * RAD_TO_DEG);
+        // non-uniform scale
+        ofScale(8, 0.25f);
+        // set the color using HSV color
         ofSetColor(ofColor::fromHsb(rel*255, 255, 255));
-        ofDrawCircle(ofPoint(0), 30);
+        // draw a circle based on the current matrix
+        ofDrawCircle(ofPoint(0), 20);
+        // restore the matrix
         ofPopMatrix();
     }
-    
-    ofSetColor(ofFloatColor(1,1,1));
-    ofFill();
-    ofDrawCircle(ofPoint(0), 15);
 }
 
 
